@@ -1,9 +1,12 @@
-import '@styles/globals.css';
-import { Ysabeau_Infant } from "@next/font/google"
+import "@styles/globals.css";
+import { Ysabeau_Infant, Roboto_Mono } from "@next/font/google";
 import type { Metadata } from "next";
 import { Nav } from "@components/Nav";
 
-export const quicksand = Ysabeau_Infant({subsets: ['latin', 'cyrillic'], weight: '300'})
+export const font = Roboto_Mono({
+  subsets: ["latin", "cyrillic"],
+  weight: "300",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={quicksand.className}>
-      <main className="app main">
-        <Nav />
-        {children}
-      </main>
+    <html lang="en" className={font.className}>
+      <body className="app main">
+          <Nav />
+          {children}
+      </body>
     </html>
   );
 }
