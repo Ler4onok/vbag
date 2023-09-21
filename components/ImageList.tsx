@@ -1,10 +1,16 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import Image from "@components/Image";
 
 interface ImageListProps {
   variant?: string;
+}
+
+interface ImageProps {
+  name: string;
+  price: string;
+  src: string;
 }
 
 const ImageList = ({ variant }: ImageListProps) => {
@@ -12,7 +18,7 @@ const ImageList = ({ variant }: ImageListProps) => {
     alert("You bought this item!");
   };
 
-  const images = [
+  const images: Array<ImageProps> = [
     {
       name: "Foggy Day",
       price: "$100",
@@ -34,12 +40,12 @@ const ImageList = ({ variant }: ImageListProps) => {
 
   return (
     <div className="flex gap-12">
-      {images.map(({ name, src, price }) => (
+      {images.map(({ name, src, price }: ImageProps ) => (
         <div key={name}>
-          <Image src={src} alt={name} width={320} height={100} />
+          <Image src={src} alt={name}  />
           <p>{name}</p>
           <p>{`Price: ${price}`}</p>
-          <button className="underline cursor-pointer" onClick={handlePurchase}>
+          <button onClick={handlePurchase}>
             buy now
           </button>
         </div>
