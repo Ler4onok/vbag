@@ -2,6 +2,7 @@ import "@styles/globals.css";
 import { Ysabeau_Infant, Roboto_Mono } from "@next/font/google";
 import type { Metadata } from "next";
 import { Nav } from "@components/Nav";
+import Footer from "@components/Footer";
 
 export const font = Roboto_Mono({
   subsets: ["latin", "cyrillic"],
@@ -21,8 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={font.className}>
       <body className="app main">
-          <Nav />
-          {children}
+        <Nav />
+        {children}
+        <Footer />
       </body>
     </html>
   );

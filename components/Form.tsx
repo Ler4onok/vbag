@@ -1,7 +1,16 @@
 "use client";
 
-import React from "react";
+import db from "@firebase/config";
+import React, { useEffect, useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { addDoc, collection, getDocs } from "firebase/firestore";
+
+enum EInputs {
+  firstName = "firstName",
+  lastName = "lastName",
+  email = "email",
+  file = "file",
+}
 
 type Inputs = {
   firstName: string;
@@ -17,7 +26,21 @@ const Form = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+
+  // useEffect(() => {
+  //   const getCollection = async () => {
+  //     const querySnapshot = await getDocs(collection(db, "custom"));
+  //     querySnapshot.forEach((doc) => {
+  //       console.log(doc.id, " => ", doc.data());
+  //     });
+  //   };
+
+  //   getCollection();
+  // }, []);
+
+  // const formRef = useRef<HTMLFormElement | null>(null); 
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log({ data });
 
     const formData = new FormData();
@@ -25,34 +48,33 @@ const Form = () => {
 
     console.log({ formData });
 
-    // const res = await fetch("http://localhost:3000/upload-file", {
-    //   method: "POST",
-    //   body: formData,
-    // }).then((res) => res.json());
+    const newData = {...data, file: data.file[0]?.name}
+    await addDoc(collection(db, "custom"), newData);
+ 
+    // (formRef.current as HTMLFormElement | null)?.reset();
   };
+
+  const inputs: Array<{ name: EInputs; placeholder: string }> = [
+    { name: EInputs.firstName, placeholder: "First name" },
+    { name: EInputs.lastName, placeholder: "Last name" },
+    { name: EInputs.email, placeholder: "Email" },
+  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center justify-center flex-col gap-4">
-        {/* todo: iterate + validate email */}
+        {inputs.map(({ name, placeholder }) => {
+          return (
+            <input
+              key={name}
+              className="w-[400px] p-4 border border-black"
+              placeholder={placeholder}
+              {...register(name)}
+            />
+          );
+        })}
         <input
-          className="min-w-[400px] p-4 border border-black"
-          defaultValue="Lera"
-          {...register("firstName")}
-        />
-        <input
-          className="min-w-[400px] p-4 border border-black"
-          defaultValue="Chizh"
-          {...register("lastName")}
-        />
-        <input
-          className="min-w-[400px] p-4 border border-black"
-          defaultValue="email@gmail.com"
-          {...register("email", { required: true })}
-        />
-
-        <input
-          className="min-w-[400px] p-4 border border-black"
+          className="w-[400px] p-4 border border-black"
           type="file"
           {...register("file")}
         />
@@ -60,7 +82,7 @@ const Form = () => {
         {/* todo: style error message */}
         {/* {errors.email && <span>This field is required</span>} */}
 
-        <input className='button' type="submit" />
+        <input className="button" type="submit" />
       </div>
     </form>
   );
