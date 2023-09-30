@@ -1,18 +1,18 @@
 "use client";
 
-import db from "@firebase/config";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { addCustomDesign, uploadFile } from "@firebase/utils";
 
-enum EInputs {
+// todo: add eslint rule - remove unused imports
+enum ECustomFormInputs {
   firstName = "firstName",
   lastName = "lastName",
   email = "email",
   file = "file",
 }
 
-type Inputs = {
+export type CustomFormInputs = {
   firstName: string;
   lastName: string;
   email: string;
@@ -25,45 +25,30 @@ const Form = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<CustomFormInputs>();
 
-  // useEffect(() => {
-  //   const getCollection = async () => {
-  //     const querySnapshot = await getDocs(collection(db, "custom"));
-  //     querySnapshot.forEach((doc) => {
-  //       console.log(doc.id, " => ", doc.data());
-  //     });
-  //   };
+  const onSubmit: SubmitHandler<CustomFormInputs> = async (data) => {
+    uploadFile(data.file[0]).then((imageUrl) => {
+      const formData = { ...data, file: imageUrl };
+      addCustomDesign(formData);
+    });
 
-  //   getCollection();
-  // }, []);
-
-  // const formRef = useRef<HTMLFormElement | null>(null); 
-
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log({ data });
-
-    const formData = new FormData();
-    formData.append("file", data.file[0]);
-
-    console.log({ formData });
-
-    const newData = {...data, file: data.file[0]?.name}
-    await addDoc(collection(db, "custom"), newData);
- 
-    // (formRef.current as HTMLFormElement | null)?.reset();
+    // todo: reset form
   };
 
-  const inputs: Array<{ name: EInputs; placeholder: string }> = [
-    { name: EInputs.firstName, placeholder: "First name" },
-    { name: EInputs.lastName, placeholder: "Last name" },
-    { name: EInputs.email, placeholder: "Email" },
+  const CustomFormInputs: Array<{
+    name: ECustomFormInputs;
+    placeholder: string;
+  }> = [
+    { name: ECustomFormInputs.firstName, placeholder: "First name" },
+    { name: ECustomFormInputs.lastName, placeholder: "Last name" },
+    { name: ECustomFormInputs.email, placeholder: "Email" },
   ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center justify-center flex-col gap-4">
-        {inputs.map(({ name, placeholder }) => {
+        {CustomFormInputs.map(({ name, placeholder }) => {
           return (
             <input
               key={name}
