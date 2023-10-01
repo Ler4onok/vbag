@@ -1912,7 +1912,7 @@ firebase-admin@^11.10.1:
 
 firebase@^10.4.0:
   version "10.4.0"
-  resolved "https://registry.npmjs.org/firebase/-/firebase-10.4.0.tgz"
+  resolved "https://registry.yarnpkg.com/firebase/-/firebase-10.4.0.tgz#8b3c94765d69ebe706ff02e6bb0ed48092900fa6"
   integrity sha512-3Z8WsNwA7kbcKGZ+nrTZ/ES518pk0K440ZJYD8nUNKN5hV6ll+unhUw30t1msedN6yIFjhsC/9OwT4Z0ohwO2w==
   dependencies:
     "@firebase/analytics" "0.10.0"
