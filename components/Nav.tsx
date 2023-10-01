@@ -4,7 +4,7 @@ import React from 'react'
 
 export const Nav = () => {
   return (
-    <nav className='w-full h-20 flex items-center justify-center gap-12'>
+    <nav className='w-full h-20 flex items-center justify-center gap-12 bg-white border-b border-gray-100'>
       <Link href='/bags'>Bags</Link>
       <Link href='/'><Image
         src="/assets/leaf.png" 

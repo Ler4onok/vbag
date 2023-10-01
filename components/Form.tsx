@@ -21,6 +21,7 @@ export type CustomFormInputs = {
   file: any;
 };
 
+// todo: change state of form after upload and submit -- successful banners
 const Form = () => {
   const {
     register,

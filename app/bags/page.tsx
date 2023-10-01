@@ -1,9 +1,15 @@
-import React from 'react'
+import ImageList from "@components/ImageList";
+import Section from "@components/Section";
+import React from "react";
 
 const Bags = () => {
   return (
-    <div>Bags</div>
-  )
-}
+    <div className="flex item-center justify-center">
+      <Section name="Available now">
+        <ImageList />
+      </Section>
+    </div>
+  );
+};
 
-export default Bags
+export default Bags;

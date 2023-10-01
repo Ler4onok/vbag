@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={font.className}>
-      <body className="app main">
+      <body className="app main min-h-screen">
         <Nav />
         {children}
         <Footer />

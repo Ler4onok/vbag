@@ -1,6 +1,7 @@
 'use client';
 import Form from "@components/Form";
 import Image from "@components/Image";
+import ImageBanner from "@components/ImageBanner";
 import ImageList from "@components/ImageList";
 import Section from "@components/Section";
 import React, { useEffect, useState } from "react";
@@ -10,7 +11,7 @@ const commonTextStyles = "w-[400px] text-center text-lg pb-8 leading-none";
 const Page = () => {
   return (
     <>
-      <div className="image w-full h-4/5 bg-cover"></div>
+      <ImageBanner name='main' />
       <div className="w-full">
         <Section name="Available now">
           <ImageList variant="homepage" />
