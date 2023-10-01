@@ -3,6 +3,7 @@
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { addCustomDesign, uploadFile } from "@firebase/utils";
+import UploadIcon from "./icons/Upload";
 
 // todo: add eslint rule - remove unused imports
 enum ECustomFormInputs {
@@ -58,8 +59,17 @@ const Form = () => {
             />
           );
         })}
+
+        <label
+          htmlFor="file-upload"
+          className="custom-file-upload w-[400px] p-4 border border-black flex justify-start items-center gap-4"
+        >
+          <UploadIcon />
+          <p>Click to upload</p>
+        </label>
         <input
-          className="w-[400px] p-4 border border-black"
+          id="file-upload"
+          className="hidden"
           type="file"
           {...register("file")}
         />
