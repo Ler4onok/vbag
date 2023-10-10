@@ -5,7 +5,7 @@ const UploadIcon = () => {
     <svg
     className="h-5 w-5 text-black"
     viewBox="0 0 24 24"
-    stroke-width="1"
+    strokeWidth="1"
     stroke="currentColor"
     fill="none"
   >
