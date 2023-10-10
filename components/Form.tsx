@@ -1,17 +1,12 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { addCustomDesign, uploadFile } from "@firebase/utils";
 import UploadIcon from "./icons/Upload";
+import { ECustomFormInputs } from "@utils/enums";
 
 // todo: add eslint rule - remove unused imports
-enum ECustomFormInputs {
-  firstName = "firstName",
-  lastName = "lastName",
-  email = "email",
-  file = "file",
-}
 
 export type CustomFormInputs = {
   firstName: string;
@@ -23,19 +18,28 @@ export type CustomFormInputs = {
 
 // todo: change state of form after upload and submit -- successful banners
 const Form = () => {
+  const [filename, setFilename] = useState("");
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitSuccessful },
+    reset,
   } = useForm<CustomFormInputs>();
 
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      setFilename("");
+      reset();
+    }
+  }, [reset, isSubmitSuccessful]);
+
   const onSubmit: SubmitHandler<CustomFormInputs> = async (data) => {
+    console.log(errors)
     uploadFile(data.file[0]).then((imageUrl) => {
       const formData = { ...data, file: imageUrl };
       addCustomDesign(formData);
     });
-
-    // todo: reset form
   };
 
   const CustomFormInputs: Array<{
@@ -56,7 +60,7 @@ const Form = () => {
               key={name}
               className="w-[400px] p-4 border border-black"
               placeholder={placeholder}
-              {...register(name)}
+              {...register(name, {minLength: 2, required: true, ...(name===ECustomFormInputs.email && {pattern: /^\S+@\S+$/i})})}
             />
           );
         })}
@@ -66,19 +70,21 @@ const Form = () => {
           className="custom-file-upload w-[400px] p-4 border border-black flex justify-start items-center gap-4"
         >
           <UploadIcon />
-          <p>Click to upload</p>
+          <p>{filename ? filename : "Click to upload"}</p>
         </label>
         <input
           id="file-upload"
           className="hidden"
           type="file"
-          {...register("file")}
+          {...register("file", {
+            onChange: (event) => setFilename(event.target.files[0].name),
+          })}
         />
 
-        {/* todo: style error message */}
-        {/* {errors.email && <span>This field is required</span>} */}
+        {/* todo: style error message and set timeout */}
+        {errors.email && <span className="text-red-500">This field is required</span>}
 
-        <input className="button" type="submit" />
+        <input className="button" type="submit" onClick={() => console.log({errors})} />
       </div>
     </form>
   );
